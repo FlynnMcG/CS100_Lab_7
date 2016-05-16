@@ -94,15 +94,27 @@ class PreOrderIterator : public Iterator
 		Base* current();
 };
 
-/*
+
 void PreOrderIterator::first()
 {
-
+    while ( ! iterators.empty() )
+    {
+        iterators.pop();
+    }
+    
+    
+    current_ptr=self_ptr->create_iterator();
+    iterators.push(current_ptr);
 }
 
 void PreOrderIterator::next()
 {
-	
+	if(current_ptr->next!=NULL)
+    {
+        current_ptr=(current_ptr->next);
+        
+        
+    }
 }
 
 bool PreOrderIterator::is_done()
@@ -114,4 +126,26 @@ Base* PreOrderIterator::current()
 {
 	
 }
+<<<<<<< Updated upstream:iterator.h
 */
+=======
+
+int main () {
+	int* it1 = new int(0);
+	int* it2 = it1;
+	it2++;
+	*it2 = 1;
+	it2++;
+	*it2 = 2;
+	it2++;
+	*it2 = 3;
+
+
+	for (int i = 0; i < 4; ++i)
+	{
+		std :: cout << *(it1+i) << std :: endl;
+	}
+
+	return 0;
+}
+>>>>>>> Stashed changes:Iterator.cpp
