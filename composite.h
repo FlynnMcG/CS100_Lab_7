@@ -5,11 +5,13 @@
 #include <sstream>
 #include <math.h>
 #include <string>
+#include "iterator.h"
 
 using namespace std;
 
-// forward declare to avoid circular dependencies
 class Iterator;
+class NullIterator;
+class UnaryIterator;
 
 //Abstract Base Class
 class Base {
@@ -17,7 +19,11 @@ class Base {
         Base(){};
 
         //virtual
+        virtual void print() = 0;
         virtual double evaluate() = 0;
+        virtual Iterator* create_iterator() = 0;
+        virtual Base* get_left() = 0;
+        virtual Base* get_right() = 0;
 };
 
 //Leaf Class
@@ -26,11 +32,14 @@ class Op: public Base {
         double value;
 
     public:
-        Op() : Base(), value(0){};
-        Op(double val) : Base(), value(val){};
-        double evaluate() { 
-            return this->value; 
-        };
+        Op();
+        Op(double val);
+
+        Base* get_left();
+        Base* get_right();
+        double evaluate(); 
+        void print();
+        Iterator* create_iterator();
 };
 
 //Composite Base Classes
@@ -38,59 +47,72 @@ class Operator: public Base {
     protected:
         Base* left, *right;
     public:
-        Operator() : Base(){ };
-        Operator(Base* l, Base* r) : left(l), right(r){  };
+        Operator();
+        Operator(Base* l, Base* r);
 
-        Base* get_left() { return left; };
-        Base* get_right() { return right; };
-
+        Base* get_left();
+        Base* get_right();
         virtual double evaluate() = 0;	//Note: this is implicit in the inheritance, but can also be made explicit
+        Iterator* create_iterator();
 };
 
 class UnaryOperator: public Base {
     protected:
         Base* child;
     public:
-        UnaryOperator() : Base(){};
-        UnaryOperator(Base* c) : child(c) { };
+        UnaryOperator();
+        UnaryOperator(Base* c);
+
+        Base* get_left();
+        Base* get_right();
         virtual double evaluate() = 0;	//Note: this is implicit in the inheritance, but can also be made explicit
+        Iterator* create_iterator();
 };
 
 //Composite Classes
 class Add: public Operator {
     public:
-        Add() : Operator() { };
-        Add(Base* left, Base* right) : Operator(left,right) { };
-        double evaluate() {
-            return this->left->evaluate() + this->right->evaluate(); 
-        };
+        Add();
+        Add(Base* left, Base* right);
+
+        void print();
+        double evaluate();
 };
 
 class Sub: public Operator {
     public:
-        Sub() : Operator() { };
-        Sub(Base* left, Base* right) : Operator(left,right) { };
-        double evaluate() {
-            return this->left->evaluate() - this->right->evaluate(); 
-        };
+        Sub();
+        Sub(Base* left, Base* right);
+
+        void print();
+        double evaluate();
 };
 
 class Mult: public Operator {
     public:
-        Mult() : Operator() { };
-        Mult(Base* left, Base* right) : Operator(left,right) { };
-        double evaluate() {
-            return this->left->evaluate() * this->right->evaluate(); 
-        };
+        Mult();
+        Mult(Base* left, Base* right);
+
+        void print();
+        double evaluate();
 };
 
 class Sqr: public UnaryOperator {
     public:
-        Sqr() : UnaryOperator() { };
-        Sqr(Base* child) : UnaryOperator(child) { };
-        double evaluate() {
-            return pow(this->child->evaluate(),2);
-        };
+        Sqr();
+        Sqr(Base* child);
+
+        void print();
+        double evaluate();
 };
 
-#endif
+class Root: public UnaryOperator {
+    public:
+        Root();
+        Root(Base* root);
+
+        void print();
+        double evaluate();
+};
+
+#endif //__COMPOSITE_CLASS__
