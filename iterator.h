@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stack>
-#include "composite.h"
+//#include "composite.h"
 
 class  Iterator
 {
@@ -8,7 +8,11 @@ class  Iterator
 		Base* self_ptr;
 		Base* current_ptr;
 	public :
-		Iterator  (Base* ptr)  { this->self_ptr  = ptr; }
+		Iterator  (Base* ptr)
+		{
+			this->self_ptr  = ptr;
+			this->current_ptr = self_ptr;
+		}
 
 		/*Sets up the iterator to start at the beginning of traversal*/
 		virtual  void first()  =  0;
@@ -25,10 +29,33 @@ class  Iterator
  	public:
 		OperatorIterator (Base * ptr);
 		
-		void first();
-		void  next();
-		bool is_done();
-		Base * current();
+		void first()
+		{
+			current_ptr = self_ptr->getleft();
+		};
+		void  next()
+		{
+			if (current_ptr == self_ptr->getleft())
+			{
+				current_ptr = self_ptr->getright();
+			}
+			else if (current_ptr == self_ptr->getright())
+			{
+				current_ptr = NULL;
+			}
+		};
+		bool is_done()
+		{
+			if (current_ptr == NULL)
+			{
+				return true;
+			}
+			return false;
+		};
+		Base * current()
+		{
+			return current_ptr;
+		};
 };
 
 class UnaryIterator : public Iterator
@@ -88,21 +115,3 @@ Base* PreOrderIterator::current()
 	
 }
 */
-int main () {
-	int* it1 = new int(0);
-	int* it2 = it1;
-	it2++;
-	*it2 = 1;
-	it2++;
-	*it2 = 2;
-	it2++;
-	*it2 = 3;
-
-
-	for (int i = 0; i < 4; ++i)
-	{
-		std :: cout << *(it1+i) << std :: endl;
-	}
-
-	return 0;
-}
