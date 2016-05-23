@@ -13,106 +13,58 @@ void OperatorIterator :: next(){
 	{
 		current_ptr = NULL;
 	}
-}
+};
 bool OperatorIterator :: is_done(){
 	if (current_ptr == NULL)
 	{
 		return true;
 	}
 	return false;
-}
-Base* current() { return current_ptr; };
+};
+Base* OperatorIterator :: current() { return current_ptr; };
 
-/*
- class  OperatorIterator  :  public  Iterator
- {
- 	public:
-		OperatorIterator (Base * ptr);
-		
-		void first()
-		{
-			current_ptr = self_ptr->getleft();
-		};
-		void  next()
-		{
-			if (current_ptr == self_ptr->getleft())
-			{
-				current_ptr = self_ptr->getright();
-			}
-			else if (current_ptr == self_ptr->getright())
-			{
-				current_ptr = NULL;
-			}
-		};
-		bool is_done()
-		{
-			if (current_ptr == NULL)
-			{
-				return true;
-			}
-			return false;
-		};
-		Base * current()
-		{
-			return current_ptr;
-		};
+//--------------------------------------------------------------------------
+// Unary Iterator Class
+//--------------------------------------------------------------------------
+void UnaryIterator :: first() { current_ptr = self_ptr->getleft(); };
+void UnaryIterator :: next() { current_ptr = NULL; };
+bool UnaryIterator :: is_done(){
+	if (current_ptr == NULL)
+	{
+		return true;
+	}
+	return false;
+};
+Base* UnaryIterator :: current() { return current_ptr; };
+
+//--------------------------------------------------------------------------
+// Null Iterator Class
+//--------------------------------------------------------------------------
+void NullIterator :: first() {};
+void NullIterator :: next() {};
+bool NullIterator :: is_done() { return true };
+Base* NullIterator :: current() { return NULL; };
+
+//--------------------------------------------------------------------------
+// Pre Order Iterator Class
+//--------------------------------------------------------------------------
+void PreOrderIterator :: first() {
+
+};
+void PreOrderIterator :: next() {
+
+};
+bool PreOrderIterator :: is_done() {
+	return true
+};
+Base* PreOrderIterator :: current() {
+	return NULL;
 };
 
-class UnaryIterator : public Iterator
-{
-	public:
-		UnaryIterator(Base* ptr);
-		
-		void first();
-		void next();
-		bool is_done();
-		Base* current();
-};
 
-class NullIterator : public Iterator
-{
-	public:
-		NullIterator(Base* ptr);
-		
-		void first();
-		void next();
-		bool is_done();
-		Base* current();
-};
 
-class PreOrderIterator : public Iterator
-{
-	protected:
-		std :: stack<Iterator*> iterators;
 
-	public:
-		PreOrderIterator(Base* ptr);
-		
-		void first();
-		void next();
-		bool is_done();
-		Base* current();
-};
-*/
 
-/*
-void PreOrderIterator::first()
-{
 
-}
 
-void PreOrderIterator::next()
-{
-	
-}
 
-bool PreOrderIterator::is_done()
-{
-	
-}
-
-Base* PreOrderIterator::current()
-{
-	
-}
-*/
