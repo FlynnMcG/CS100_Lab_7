@@ -1,6 +1,11 @@
+#ifndef __ITERATOR_CLASS__
+#define __ITERATOR_CLASS__
+
 #include <iostream>
 #include <stack>
-//#include "composite.h"
+#include "composite.h"
+
+class Base;
 
 class  Iterator
 {
@@ -8,11 +13,7 @@ class  Iterator
 		Base* self_ptr;
 		Base* current_ptr;
 	public :
-		Iterator  (Base* ptr)
-		{
-			this->self_ptr  = ptr;
-			this->current_ptr = self_ptr;
-		}
+		Iterator  (Base* ptr) { this->self_ptr  = ptr; }
 
 		/*Sets up the iterator to start at the beginning of traversal*/
 		virtual  void first()  =  0;
@@ -29,33 +30,10 @@ class  Iterator
  	public:
 		OperatorIterator (Base * ptr);
 		
-		void first()
-		{
-			current_ptr = self_ptr->getleft();
-		};
-		void  next()
-		{
-			if (current_ptr == self_ptr->getleft())
-			{
-				current_ptr = self_ptr->getright();
-			}
-			else if (current_ptr == self_ptr->getright())
-			{
-				current_ptr = NULL;
-			}
-		};
-		bool is_done()
-		{
-			if (current_ptr == NULL)
-			{
-				return true;
-			}
-			return false;
-		};
-		Base * current()
-		{
-			return current_ptr;
-		};
+		void first();
+		void  next();
+		bool is_done();
+		Base * current();
 };
 
 class UnaryIterator : public Iterator
@@ -83,7 +61,7 @@ class NullIterator : public Iterator
 class PreOrderIterator : public Iterator
 {
 	protected:
-		stack<Iterator*> iterators;
+		std :: stack<Iterator*> iterators;
 
 	public:
 		PreOrderIterator(Base* ptr);
@@ -94,24 +72,4 @@ class PreOrderIterator : public Iterator
 		Base* current();
 };
 
-/*
-void PreOrderIterator::first()
-{
-
-}
-
-void PreOrderIterator::next()
-{
-	
-}
-
-bool PreOrderIterator::is_done()
-{
-	
-}
-
-Base* PreOrderIterator::current()
-{
-	
-}
-*/
+#endif //__ITERATOR_CLASS__
