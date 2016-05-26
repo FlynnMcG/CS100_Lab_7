@@ -49,16 +49,27 @@ Base* NullIterator :: current() { return NULL; };
 // Pre Order Iterator Class
 //--------------------------------------------------------------------------
 void PreOrderIterator :: first() {
-
+	while (!iterators.empty())
+		iterators.pop();
+	Iterator ite = self_ptr->create_iterator();
+	ite->first();
+	iterators.push(ite);
 };
 void PreOrderIterator :: next() {
-
+	Iterator ite = iterators.top()->current()->create_iterator();
+	ite->first();
+	iterators.push(ite);
+	while (!iterators.empty() && iterators.top()->is_done()) {
+		iterators.pop();
+		if (!iterators.empty())
+			iterators.top()->next();
+	}
 };
 bool PreOrderIterator :: is_done() {
 	return true
 };
 Base* PreOrderIterator :: current() {
-	return NULL;
+	return iterators.top()->current();
 };
 
 
